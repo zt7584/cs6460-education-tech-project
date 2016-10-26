@@ -1,30 +1,54 @@
 package edu.dev.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Created by tengzhao on 9/18/16.
  */
+@Entity
+@Table(name = "user")
 public class User {
     public static String TAG = User.class.getCanonicalName();
 
-    private String username;
+    public interface Role {
+        int INSTRUCTOR = 0;
+        int STUDENT = 1;
+    }
+
+    @Id
+    private int id;
+    private String email;
     private String name;
     private String password;
+    private int role;
 
     public User() {
     }
 
-    public User(String username, String name, String password) {
-        this.username = username;
+    public User(int id, String email, String name, String password, int role) {
+        this.id = id;
+        this.email = email;
         this.name = name;
         this.password = password;
+        this.role = role;
     }
 
-    public String getUsername() {
-        return username;
+    public int getId() {
+        return id;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getName() {
@@ -43,11 +67,22 @@ public class User {
         this.password = password;
     }
 
+    public int getRole() {
+        return role;
+    }
+
+    public void setRole(int role) {
+        this.role = role;
+    }
+
     @Override
     public String toString() {
-        return "[User]: {"
-                + "username: " + username + ","
-                + "name: " + name + ","
-                + "password: " + password + "}";
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                ", role=" + role +
+                '}';
     }
 }

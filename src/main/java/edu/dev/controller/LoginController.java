@@ -1,11 +1,13 @@
 package edu.dev.controller;
 
 import edu.dev.entity.User;
+import edu.dev.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
@@ -16,7 +18,7 @@ import java.util.List;
 public class LoginController {
 
     @Autowired
-    JdbcTemplate jdbcTemplate;
+    UserRepository userRepository;
 
     @GetMapping("/login")
     public String loginGet(Model model) {
@@ -25,14 +27,12 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String loginPost(@ModelAttribute User user) {
-        List<User> result = jdbcTemplate.query(
-                "SELECT username, name, password FROM User WHERE username=?",
-                new Object[] { user.getUsername()},
-                (rs, rowNum) -> new User(rs.getString("username"), rs.getString("name"), rs.getString("password")));
+    public String loginPost(Model model, @ModelAttribute User user) {
+        List<User> result = userRepository.findByUsername(user.getEmail());
         if (result != null && result.size() == 1) {
             if (user.getPassword().equals(result.get(0).getPassword())) {
-                return "success";
+                model.addAttribute("email", user.getEmail());
+                return "profile";
             }
         }
         return "error";

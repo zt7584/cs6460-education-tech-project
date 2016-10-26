@@ -3,13 +3,54 @@
 <head>
   <title>Log In</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <!--<link rel="stylesheet" type="text/css" href="css.css"/>-->
+
+  <!-- CSS -->
+  <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" type="text/css" href="css/css.css" />
+
+  <!-- JavaScript -->
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 </head>
 <body>
-  <form action="#" th:action="@{/login}" th:object="${user}" method="post">
-    <p>Username: <input type="text" th:field="*{username}"/></p>
-    <p>Password: <input type="text" th:field="*{password}"/></p>
-    <p><input type="submit" value="Submit"/> </p>
-  </form>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">CS6460 Education Technology Project</a>
+    </div>
+  </div>
+</nav>
+<div class="container">
+  <div class="row">
+    <div class="col-md-offset-4 col-md-4">
+      <ul class="nav nav-pills">
+        <li class="active">
+          <a href="#student" data-toggle="tab">Student</a>
+        </li>
+        <li><a href="#instructor" data-toggle="tab">Instructor</a>
+        </li>
+      </ul>
+      <div class="tab-content clearfix">
+        <div class="tab-pane active" id="student">
+          <h1>Student Login</h1>
+          <form action="#" th:action="@{/login}" th:object="${user}" method="post">
+            <p>Email: <input type="text" th:field="*{email}"/></p>
+            <p>Password: <input type="text" th:field="*{password}"/></p>
+            <p><input type="submit" value="Submit"/></p>
+          </form>
+          <a href="/register"><h3>Register</h3></a>
+        </div>
+        <div class="tab-pane" id="instructor">
+          <h1>Instructor Login</h1>
+          <form action="#" th:action="@{/login}" th:object="${user}" method="post">
+            <p>Email: <input type="text" th:field="*{email}"/></p>
+            <p>Password: <input type="text" th:field="*{password}"/></p>
+            <p><input type="submit" value="Submit"/></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>
