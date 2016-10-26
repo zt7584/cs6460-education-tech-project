@@ -6,23 +6,21 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * Created by tengzhao on 10/25/16.
+ * Created by tengzhao on 10/26/16.
  */
 @Controller
-public class StudentProfileController {
+public class LogoutController {
 
-    @GetMapping("/profile")
-    public String profileGet(HttpSession session, Model model) {
+    @GetMapping("/logout")
+    public String loginGet(HttpSession session) {
         User user = (User) session.getAttribute(Constant.SESSION_USER);
         if (user == null) {
             return "redirect:/login";
         }
-        model.addAttribute("sessionUserName", user.getName());
-        return "profile";
+        session.removeAttribute(Constant.SESSION_USER);
+        return "logout";
     }
 }

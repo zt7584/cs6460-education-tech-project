@@ -24,7 +24,7 @@
   <div class="row">
     <div class="col-md-offset-4 col-md-4">
       <h1>Student Registration</h1>
-      <form action="#" th:action="@{/register}" th:object="${user}" method="post">
+      <form action="#" th:action="@{/register}" th:object="${registerUser}" method="post">
         <p>Email: <input type="text" th:field="*{email}"/></p>
         <p>Name: <input type="text" th:field="*{name}"/></p>
         <p>Password: <input type="text" th:field="*{password}"/></p>

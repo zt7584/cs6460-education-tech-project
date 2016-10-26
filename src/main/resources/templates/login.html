@@ -33,7 +33,7 @@
       <div class="tab-content clearfix">
         <div class="tab-pane active" id="student">
           <h1>Student Login</h1>
-          <form action="#" th:action="@{/login}" th:object="${user}" method="post">
+          <form action="#" th:action="@{/login}" th:object="${studentUser}" method="post">
             <p>Email: <input type="text" th:field="*{email}"/></p>
             <p>Password: <input type="text" th:field="*{password}"/></p>
             <p><input type="submit" value="Submit"/></p>
@@ -42,7 +42,7 @@
         </div>
         <div class="tab-pane" id="instructor">
           <h1>Instructor Login</h1>
-          <form action="#" th:action="@{/login}" th:object="${user}" method="post">
+          <form action="#" th:action="@{/login}" th:object="${instructorUser}" method="post">
             <p>Email: <input type="text" th:field="*{email}"/></p>
             <p>Password: <input type="text" th:field="*{password}"/></p>
             <p><input type="submit" value="Submit"/></p>
