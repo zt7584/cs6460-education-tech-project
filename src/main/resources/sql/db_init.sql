@@ -35,10 +35,10 @@ CREATE TABLE IF NOT EXISTS proposal (
 );
 
 CREATE TABLE IF NOT EXISTS user_proposal_relationship (
-  id INT AUTO_INCREMENT PRIMARY KEY,
   uid INT,
   pid INT,
   relationship INT,
+  PRIMARY KEY (uid, pid, relationship),
   FOREIGN KEY (uid) REFERENCES user(id),
   FOREIGN KEY (pid) REFERENCES proposal(id)
-)
+);
