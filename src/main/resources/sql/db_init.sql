@@ -32,13 +32,13 @@ CREATE TABLE IF NOT EXISTS proposal (
   status INT NOT NULL,
   created_at DATETIME NOT NULL,
   last_updated_at DATETIME NOT NULL
-)
+);
 
 CREATE TABLE IF NOT EXISTS user_proposal_relationship (
-  id INT AUTO_INCREMENT PRIMARY KEY,
   uid INT,
   pid INT,
   relationship INT,
+  PRIMARY KEY (uid, pid, relationship),
   FOREIGN KEY (uid) REFERENCES user(id),
   FOREIGN KEY (pid) REFERENCES proposal(id)
-)
+);

@@ -1,14 +1,15 @@
 package edu.dev.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 /**
  * Created by tengzhao on 10/26/16.
  */
 @Entity
 @Table(name = "user_proposal_relationship")
+@IdClass(UserProposalRelationshipId.class)
 public class UserProposalRelationship {
     public static String TAG = UserProposalRelationship.class.getCanonicalName();
 
@@ -20,51 +21,18 @@ public class UserProposalRelationship {
     @Override
     public String toString() {
         return "UserProposalRelationship{" +
-                "id=" + id +
-                ", uid=" + uid +
+                "uid=" + uid +
                 ", pid=" + pid +
                 ", relationship=" + relationship +
                 '}';
     }
 
     @Id
-    private int id;
-    private int uid;
-    private int pid;
-    private int relationship;
+    private long uid;
+    @Id
+    private long pid;
 
-    public UserProposalRelationship(int id, int uid, int pid, int relationship) {
-        this.id = id;
-        this.uid = uid;
-        this.pid = pid;
-        this.relationship = relationship;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getUid() {
-        return uid;
-    }
-
-    public void setUid(int uid) {
-        this.uid = uid;
-    }
-
-    public int getPid() {
-        return pid;
-    }
-
-    public void setPid(int pid) {
-        this.pid = pid;
-    }
-
-    public int getRelationship() {
+    public long getRelationship() {
         return relationship;
     }
 
@@ -72,4 +40,55 @@ public class UserProposalRelationship {
         this.relationship = relationship;
     }
 
+    //    @ManyToOne
+//    @PrimaryKeyJoinColumn(name="uid", referencedColumnName="id")
+//    private User user;
+//    @ManyToOne
+//    @PrimaryKeyJoinColumn(name="pid", referencedColumnName="id")
+//    private Proposal proposal;
+    @Id
+    private long relationship;
+
+    public UserProposalRelationship() {
+    }
+
+    public long getUid() {
+        return uid;
+    }
+
+    public void setUid(long uid) {
+        this.uid = uid;
+    }
+
+    public long getPid() {
+        return pid;
+    }
+
+    public void setPid(long pid) {
+        this.pid = pid;
+    }
+
+//    public User getUser() {
+//        return user;
+//    }
+//
+//    public void setUser(User user) {
+//        this.user = user;
+//    }
+//
+//    public Proposal getProposal() {
+//        return proposal;
+//    }
+//
+//    public void setProposal(Proposal proposal) {
+//        this.proposal = proposal;
+//    }
+//
+//    public int getRelationship() {
+//        return relationship;
+//    }
+//
+//    public void setRelationship(int relationship) {
+//        this.relationship = relationship;
+//    }
 }

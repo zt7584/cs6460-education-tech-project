@@ -1,8 +1,8 @@
 package edu.dev.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by tengzhao on 9/18/16.
@@ -18,11 +18,15 @@ public class User {
     }
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String email;
     private String name;
     private String password;
     private int role;
+
+//    @OneToMany(mappedBy = "user")
+//    private List<UserProposalRelationship> proposals = new ArrayList<>();
 
     public User() {
     }
@@ -74,6 +78,14 @@ public class User {
     public void setRole(int role) {
         this.role = role;
     }
+
+//    public List<UserProposalRelationship> getProposals() {
+//        return proposals;
+//    }
+//
+//    public void setProposals(List<UserProposalRelationship> proposals) {
+//        this.proposals = proposals;
+//    }
 
     @Override
     public String toString() {
