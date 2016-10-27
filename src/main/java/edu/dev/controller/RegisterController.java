@@ -2,6 +2,7 @@ package edu.dev.controller;
 
 import edu.dev.entity.User;
 import edu.dev.repository.UserRepository;
+import edu.dev.service.UserService;
 import edu.dev.util.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,10 +20,10 @@ import javax.servlet.http.HttpSession;
 public class RegisterController {
 
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
 
     @GetMapping("/register")
-    public String loginGet(Model model, HttpSession session) {
+    public String registerGet(Model model, HttpSession session) {
         User user = (User) session.getAttribute(Constant.SESSION_USER);
         if (user != null) {
             return "redirect:/profile";
@@ -32,10 +33,9 @@ public class RegisterController {
     }
 
     @PostMapping("/register")
-    public String loginPost(@ModelAttribute User user, HttpSession session) {
+    public String registerPost(@ModelAttribute User user, HttpSession session) {
         try {
-            user.setRole(User.Role.STUDENT);
-            userRepository.save(user);
+        	userService.saveStudentUser(user);
             session.setAttribute(Constant.SESSION_USER, user);
             return "redirect:/profile";
         }

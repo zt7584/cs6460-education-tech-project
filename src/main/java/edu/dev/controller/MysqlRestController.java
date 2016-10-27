@@ -2,6 +2,8 @@ package edu.dev.controller;
 
 import edu.dev.entity.User;
 import edu.dev.repository.UserRepository;
+import edu.dev.service.MySqlService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -16,15 +18,12 @@ import java.util.List;
 @RestController
 public class MysqlRestController {
 
-    @Autowired
-    UserRepository userRepository;
+	@Autowired
+	MySqlService mySqlService;
 
-    @Autowired
-    JdbcTemplate jdbcTemplate;
-
-    @RequestMapping(value = "/mysql", method = RequestMethod.POST, produces = "application/json")
-    public Object execute(@RequestBody String sql) {
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper(User.class));
-        //return sql;
-    }
+	@RequestMapping(value = "/mysql", method = RequestMethod.POST, produces = "application/json")
+	public Object execute(@RequestBody String sql) {
+		return mySqlService.executeQuery(sql);
+		// return sql;
+	}
 }
