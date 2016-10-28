@@ -1,8 +1,9 @@
 package edu.dev.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by tengzhao on 10/26/16.
@@ -17,11 +18,49 @@ public class Proposal {
         int APPROVED = 1;
     }
 
+    public Proposal(int id, String title, String description, int status, List<UserProposalRelationship> users, Date createdAt, Date lastUpdatedAt) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.status = status;
+//        this.users = users;
+        this.createdAt = createdAt;
+        this.lastUpdatedAt = lastUpdatedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "Proposal{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", status=" + status +
+//                ", users=" + users +
+                ", createdAt=" + createdAt +
+                ", lastUpdatedAt=" + lastUpdatedAt +
+                '}';
+    }
+
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String title;
     private String description;
     private int status;
+
+//    @OneToMany(mappedBy = "proposal")
+//    private List<UserProposalRelationship> users = new ArrayList<>();
+
+    @Column(name = "created_at", columnDefinition="DATETIME")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
+
+    @Column(name = "last_updated_at", columnDefinition="DATETIME")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastUpdatedAt;
+
+    public Proposal() {
+    }
 
     public Proposal(int id, String title, String description, int status) {
         this.id = id;
@@ -62,13 +101,42 @@ public class Proposal {
         this.status = status;
     }
 
-    @Override
-    public String toString() {
-        return "Proposal{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", status=" + status +
-                '}';
+//    public List<UserProposalRelationship> getUsers() {
+//        return users;
+//    }
+//
+//    public void setUsers(List<UserProposalRelationship> users) {
+//        this.users = users;
+//    }
+
+//    public void addUser(User user, boolean isCreator) {
+//        UserProposalRelationship userProposalRelationship = new UserProposalRelationship();
+//        userProposalRelationship.setRelationship(UserProposalRelationship.Relationship.CREATOR);
+////        userProposalRelationship.setUser(user);
+////        userProposalRelationship.setProposal(this);
+//        if (isCreator) {
+//            userProposalRelationship.setRelationship(UserProposalRelationship.Relationship.CREATOR);
+//        } else {
+//            userProposalRelationship.setRelationship(UserProposalRelationship.Relationship.MEMBER);
+//        }
+//        this.users.add(userProposalRelationship);
+////        user.getProposals().add(userProposalRelationship);
+//    }
+
+    public Date getCreatedAt() {
+        return createdAt;
     }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getLastUpdatedAt() {
+        return lastUpdatedAt;
+    }
+
+    public void setLastUpdatedAt(Date lastUpdatedAt) {
+        this.lastUpdatedAt = lastUpdatedAt;
+    }
+
 }

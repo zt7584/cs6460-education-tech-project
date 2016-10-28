@@ -6,6 +6,25 @@
 </head>
 <body>
  <h1>Welcome <span th:text="${sessionUserName}"></span></h1>
+ <a href="/proposal"><h2>Create Proposal</h2></a>
  <a href="/logout"><h2>Log Out</h2></a>
+ <table border="1">
+   <tr>
+     <th>Proposal Id</th>
+     <th>Proposal Title</th>
+     <th>Proposal Description</th>
+     <th>Proposal Status</th>
+     <th>Created At</th>
+     <th>Last Updated At</th>
+   </tr>
+   <tr th:each="proposal : ${proposals}">
+     <td><span th:text="${proposal.id}"></span></td>
+     <td><span th:text="${proposal.title}"></span></td>
+     <td><span th:text="${proposal.description}"></span></td>
+     <td><span th:text="${proposal.status}"></span></td>
+     <td><span th:text="${proposal.createdAt}"></span></td>
+     <td><span th:text="${proposal.lastUpdatedAt}"></span></td>
+   </tr>
+ </table>
 </body>
 </html>
