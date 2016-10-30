@@ -46,10 +46,21 @@ public class LoginController {
 		return "login";
 	}
 
-	@PostMapping("/login")
-	public String loginPost(@ModelAttribute User user, HttpSession session) {
-		if (userService.authenticate(user)) {
-			session.setAttribute(Constant.SESSION_USER, user);
+	@PostMapping("/slogin")
+	public String studentLogin(@ModelAttribute User user, HttpSession session) {
+		User authUser = userService.authenticate(user, User.Role.STUDENT);
+		if (authUser != null) {
+			session.setAttribute(Constant.SESSION_USER, authUser);
+			return "redirect:/profile";
+		}
+		return "error";
+	}
+
+	@PostMapping("/ilogin")
+	public String instructorLogin(@ModelAttribute User user, HttpSession session) {
+		User authUser = userService.authenticate(user, User.Role.INSTRUCTOR);
+		if (authUser != null) {
+			session.setAttribute(Constant.SESSION_USER, authUser);
 			return "redirect:/profile";
 		}
 		return "error";

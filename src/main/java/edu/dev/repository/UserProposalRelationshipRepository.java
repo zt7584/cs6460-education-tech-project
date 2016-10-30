@@ -2,6 +2,7 @@ package edu.dev.repository;
 
 import edu.dev.entity.Proposal;
 import edu.dev.entity.UserProposalRelationship;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 

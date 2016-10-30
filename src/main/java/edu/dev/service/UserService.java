@@ -21,12 +21,11 @@ public class UserService {
 		userRepository.save(user);
 	}
 
-	public boolean authenticate(User user) {
-		List<User> result = userRepository.findByEmailAndPassword(user.getEmail(), user.getPassword());
+	public User authenticate(User user, int role) {
+		List<User> result = userRepository.findByEmailAndPasswordAndRole(user.getEmail(), user.getPassword(), role);
 		if (result != null && result.size() == 1) {
-			return true;
+			return result.get(0);
 		}
-		return false;
+		return null;
 	}
-
 }

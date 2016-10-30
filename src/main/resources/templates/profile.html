@@ -12,23 +12,63 @@
  <h1>Welcome <span th:text="${sessionUserName}"></span></h1>
  <a href="/proposal"><h2>Create Proposal</h2></a>
  <a href="/logout"><h2>Log Out</h2></a>
- <table border="1">
-   <tr>
-     <th>Proposal Id</th>
-     <th>Proposal Title</th>
-     <th>Proposal Description</th>
-     <th>Proposal Status</th>
-     <th>Created At</th>
-     <th>Last Updated At</th>
-   </tr>
-   <tr th:each="proposal : ${proposals}">
-     <td><span th:text="${proposal.id}"></span></td>
-     <td><span th:text="${proposal.title}"></span></td>
-     <td><span th:text="${proposal.description}"></span></td>
-     <td><span th:text="${proposal.status}"></span></td>
-     <td><span th:text="${proposal.createdAt}"></span></td>
-     <td><span th:text="${proposal.lastUpdatedAt}"></span></td>
-   </tr>
- </table>
+ <div th:switch="${sessionUser.getRole()}">
+   <div th:case="1"> <!-- if customer is anonymous-->
+     <table border="1">
+       <tr>
+         <th>Proposal Id</th>
+         <th>Proposal Title</th>
+         <th>Proposal Description</th>
+         <th>Proposal Status</th>
+         <th>Created At</th>
+         <th>Last Updated At</th>
+       </tr>
+       <tr th:each="proposal : ${proposals}">
+         <td><span th:text="${proposal.id}"></span></td>
+         <td><span th:text="${proposal.title}"></span></td>
+         <td><span th:text="${proposal.description}"></span></td>
+         <td>
+           <div th:switch="${proposal.status}">
+             <span th:case="0">Pending</span>
+             <span th:case="1">Approved</span>
+           </div>
+         </td>
+         <td><span th:text="${proposal.createdAt}"></span></td>
+         <td><span th:text="${proposal.lastUpdatedAt}"></span></td>
+       </tr>
+     </table>
+   </div>
+   <div th:case="0"> <!-- if customer is not anonymous(logged in)-->
+     <table border="1">
+       <tr>
+         <th>Proposal Id</th>
+         <th>Proposal Title</th>
+         <th>Proposal Description</th>
+         <th>Proposal Status</th>
+         <th>Created At</th>
+         <th>Last Updated At</th>
+         <th>Action</th>
+       </tr>
+       <tr th:each="proposal : ${proposals}">
+         <td><span th:text="${proposal.id}"></span></td>
+         <td><span th:text="${proposal.title}"></span></td>
+         <td><span th:text="${proposal.description}"></span></td>
+         <td>
+           <div th:switch="${proposal.status}">
+             <span th:case="0">Pending</span>
+             <span th:case="1">Approved</span>
+           </div>
+         </td>
+         <td><span th:text="${proposal.createdAt}"></span></td>
+         <td><span th:text="${proposal.lastUpdatedAt}"></span></td>
+         <td>
+           <form action="#" th:action="@{/profile/} + ${proposal.id}" method="post">
+             <input type="submit" value="Approve"/>
+           </form>
+         </td>
+       </tr>
+     </table>
+   </div>
+ </div>
 </body>
 </html>

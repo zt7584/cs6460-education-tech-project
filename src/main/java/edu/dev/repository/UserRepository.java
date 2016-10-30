@@ -11,5 +11,5 @@ public interface UserRepository extends CrudRepository<User, String> {
 	//@Query(value = "SELECT id, name, email, password, role FROM user WHERE email=?1", nativeQuery = true)
 	List<User> findByEmail(String username);
 	
-	List<User> findByEmailAndPassword(String username, String password);
+	List<User> findByEmailAndPasswordAndRole(String username, String password, int role);
 }
