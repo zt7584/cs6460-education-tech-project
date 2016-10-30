@@ -14,14 +14,14 @@
     <div class="navbar-header">
       <a class="navbar-brand" href="/">CS6460 Education Technology Project</a>
     </div>
-    <p class="navbar-btn">
-      <a href="/logout" class="btn btn-default">Log Out</a>
+    <p style="float: right; " class="navbar-btn">
+      <a href="/logout" class="btn btn-primary">Log Out</a>
     </p>
   </div>
 </nav>
 <div class="container">
   <div class="row centered-form">
-    <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+    <div class="ol-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
       <h1>Welcome <span th:text="${sessionUserName}"></span>!</h1>
       <div th:if="${sessionUser.getRole()}" class="panel panel-info">
         <div class="panel-heading">
@@ -30,7 +30,7 @@
         <div class="panel-body">
           <div class="row">
             <div class="col col-md-4">
-              <button class="form-control btn btn-success" href="/proposal">Create Proposal</button>
+              <a class="form-control btn btn-success" href="/proposal">Create Proposal</a>
             </div>
           </div>
         </div>

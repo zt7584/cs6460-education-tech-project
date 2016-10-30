@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Make Proposal</title>
+  <title>Create Proposal</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
   <!-- CSS -->
@@ -18,17 +18,26 @@
     <div class="navbar-header">
       <a class="navbar-brand" href="/">CS6460 Education Technology Project</a>
     </div>
+    <p style="float: right; " class="navbar-btn">
+      <a href="/logout" class="btn btn-primary">Log Out</a>
+    </p>
   </div>
 </nav>
 <div class="container">
-  <div class="row">
-    <div class="col-md-offset-4 col-md-4">
-      <h1>Create Proposal</h1>
-      <form action="#" th:action="@{/proposal}" th:object="${proposal}" method="post">
-        <p>Title: <input type="text" th:field="*{title}"/></p>
-        <p>Description: <textarea th:field="*{description}"></textarea></p>
-        <p><input type="submit" value="Submit"/></p>
-      </form>
+  <div class="row centered-form">
+    <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title text-center">Create Proposal</h3>
+        </div>
+        <div class="panel-body">
+          <form action="#" th:action="@{/proposal}" th:object="${proposal}" method="post">
+            <p><input type="text" th:field="*{title}" class="form-control" placeholder="Enter Your Proposal Title" /></p>
+            <p><textarea th:field="*{description}" class="form-control" placeholder="Enter Your Password"></textarea></p>
+            <p><input type="submit" value="Submit" class="btn btn-success" /></p>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
 </div>

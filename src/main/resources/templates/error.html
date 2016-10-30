@@ -1,10 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8" />
   <title>Error</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+  <!-- CSS -->
+  <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" type="text/css" href="css/css.css" />
+
+  <!-- JavaScript -->
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 </head>
 <body>
-<h1>Login Failed</h1>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">CS6460 Education Technology Project</a>
+    </div>
+  </div>
+</nav>
+<div class="container">
+  <div class="row centered-form">
+    <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+      <div class="panel panel-danger">
+        <div class="panel-heading">
+          <h3 class="panel-title text-center">Error</h3>
+        </div>
+        <div class="panel-body">
+          <a href="/login">Back to Home</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>

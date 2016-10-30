@@ -1,11 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8" />
   <title>Log Out</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+  <!-- CSS -->
+  <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" type="text/css" href="css/css.css" />
+
+  <!-- JavaScript -->
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 </head>
 <body>
-  <h1>You are successfully logged out!</h1>
-  <a href="/login">Back to login page</a>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">CS6460 Education Technology Project</a>
+    </div>
+  </div>
+</nav>
+<div class="container">
+  <div class="row centered-form">
+    <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+      <div class="panel panel-info">
+        <div class="panel-heading">
+          <h3 class="panel-title text-center">Log Out</h3>
+        </div>
+        <div class="panel-body">
+          You have been logged out successfully! Click <a href="/login">here</a> to go back to Home.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>
