@@ -32,6 +32,8 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile("org.springframework.boot:spring-boot-starter-data-jpa")
 	compile("mysql:mysql-connector-java")
+	compile("org.springframework.boot:spring-boot-starter-data-mongodb")
+	compile("com.googlecode.json-simple:json-simple:1.1.1")
 
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }

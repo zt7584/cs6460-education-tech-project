@@ -1,6 +1,5 @@
 package edu.dev.service;
 
-import java.sql.ResultSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
