@@ -1,74 +1,107 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <title>Success</title>
 
-    <!-- CSS -->
-    <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" type="text/css" href="css/css.css" />
+  <!-- CSS -->
+  <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" type="text/css" href="css/css.css"/>
 </head>
 <body>
- <h1>Welcome <span th:text="${sessionUserName}"></span></h1>
- <a href="/proposal"><h2>Create Proposal</h2></a>
- <a href="/logout"><h2>Log Out</h2></a>
- <div th:switch="${sessionUser.getRole()}">
-   <div th:case="1"> <!-- if customer is anonymous-->
-     <table border="1">
-       <tr>
-         <th>Proposal Id</th>
-         <th>Proposal Title</th>
-         <th>Proposal Description</th>
-         <th>Proposal Status</th>
-         <th>Created At</th>
-         <th>Last Updated At</th>
-       </tr>
-       <tr th:each="proposal : ${proposals}">
-         <td><span th:text="${proposal.id}"></span></td>
-         <td><span th:text="${proposal.title}"></span></td>
-         <td><span th:text="${proposal.description}"></span></td>
-         <td>
-           <div th:switch="${proposal.status}">
-             <span th:case="0">Pending</span>
-             <span th:case="1">Approved</span>
-           </div>
-         </td>
-         <td><span th:text="${proposal.createdAt}"></span></td>
-         <td><span th:text="${proposal.lastUpdatedAt}"></span></td>
-       </tr>
-     </table>
-   </div>
-   <div th:case="0"> <!-- if customer is not anonymous(logged in)-->
-     <table border="1">
-       <tr>
-         <th>Proposal Id</th>
-         <th>Proposal Title</th>
-         <th>Proposal Description</th>
-         <th>Proposal Status</th>
-         <th>Created At</th>
-         <th>Last Updated At</th>
-         <th>Action</th>
-       </tr>
-       <tr th:each="proposal : ${proposals}">
-         <td><span th:text="${proposal.id}"></span></td>
-         <td><span th:text="${proposal.title}"></span></td>
-         <td><span th:text="${proposal.description}"></span></td>
-         <td>
-           <div th:switch="${proposal.status}">
-             <span th:case="0">Pending</span>
-             <span th:case="1">Approved</span>
-           </div>
-         </td>
-         <td><span th:text="${proposal.createdAt}"></span></td>
-         <td><span th:text="${proposal.lastUpdatedAt}"></span></td>
-         <td>
-           <form action="#" th:action="@{/profile/} + ${proposal.id}" method="post">
-             <input type="submit" value="Approve"/>
-           </form>
-         </td>
-       </tr>
-     </table>
-   </div>
- </div>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">CS6460 Education Technology Project</a>
+    </div>
+    <p class="navbar-btn">
+      <a href="/logout" class="btn btn-default">Log Out</a>
+    </p>
+  </div>
+</nav>
+<div class="container">
+  <div class="row centered-form">
+    <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+      <h1>Welcome <span th:text="${sessionUserName}"></span>!</h1>
+      <div th:if="${sessionUser.getRole()}" class="panel panel-info">
+        <div class="panel-heading">
+          <h3 class="panel-title text-center">Actions</h3>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col col-md-4">
+              <button class="form-control btn btn-success" href="/proposal">Create Proposal</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-info">
+        <div class="panel-heading">
+          <h3 class="panel-title text-center">Proposals</h3>
+        </div>
+        <div class="panel-body">
+          <div th:switch="${sessionUser.getRole()}">
+        <div th:case="1">
+          <table class="table table-bordered">
+            <tr>
+              <th>Proposal Id</th>
+              <th>Proposal Title</th>
+              <th>Proposal Description</th>
+              <th>Proposal Status</th>
+              <th>Created At</th>
+              <th>Last Updated At</th>
+            </tr>
+            <tr th:each="proposal : ${proposals}">
+              <td><span th:text="${proposal.id}"></span></td>
+              <td><span th:text="${proposal.title}"></span></td>
+              <td><span th:text="${proposal.description}"></span></td>
+              <td>
+                <div th:switch="${proposal.status}">
+                  <span th:case="0">Pending</span>
+                  <span th:case="1">Approved</span>
+                </div>
+              </td>
+              <td><span th:text="${proposal.createdAt}"></span></td>
+              <td><span th:text="${proposal.lastUpdatedAt}"></span></td>
+            </tr>
+          </table>
+        </div>
+        <div th:case="0">
+          <table class="table table-bordered">
+            <tr>
+              <th>Proposal Id</th>
+              <th>Proposal Title</th>
+              <th>Proposal Description</th>
+              <th>Proposal Status</th>
+              <th>Created At</th>
+              <th>Last Updated At</th>
+              <th>Action</th>
+            </tr>
+            <tr th:each="proposal : ${proposals}">
+              <td><span th:text="${proposal.id}"></span></td>
+              <td><span th:text="${proposal.title}"></span></td>
+              <td><span th:text="${proposal.description}"></span></td>
+              <td>
+                <div th:switch="${proposal.status}">
+                  <span th:case="0">Pending</span>
+                  <span th:case="1">Approved</span>
+                </div>
+              </td>
+              <td><span th:text="${proposal.createdAt}"></span></td>
+              <td><span th:text="${proposal.lastUpdatedAt}"></span></td>
+              <td>
+                <form th:if="${proposal.status} == 0" action="#" th:action="@{/profile/} + ${proposal.id}" method="post">
+                  <input type="submit" value="Approve" class="btn btn-primary"/>
+                </form>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>

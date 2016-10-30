@@ -50,7 +50,7 @@ public class ProfileController {
         }
         proposalRepository.updateProposalStatus(Proposal.Status.APPROVED, id);
         setupPage(session, model);
-        return "profile";
+        return "redirect:/profile";
     }
 
     private void setupPage(HttpSession session, Model model) {
