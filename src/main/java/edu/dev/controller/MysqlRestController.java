@@ -24,6 +24,6 @@ public class MysqlRestController {
 	@RequestMapping(value = "/mysql", method = RequestMethod.POST, produces = "application/json")
 	public Object execute(@RequestBody String sql) {
 		return mySqlService.executeQuery(sql);
-		// return sql;
+
 	}
 }
