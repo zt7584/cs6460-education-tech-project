@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Log In</title>
+  <title>Instructor Log In</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
   <!-- CSS -->
@@ -23,17 +23,16 @@
 <div class="container">
   <div class="row centered-form">
     <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
-      <div class="panel panel-primary">
+      <div class="panel panel-danger">
         <div class="panel-heading">
-          <h3 class="panel-title text-center">Student Log In</h3>
+          <h3 class="panel-title text-center">Instructor Log In</h3>
         </div>
         <div class="panel-body">
-          <form action="#" th:action="@{/slogin}" th:object="${studentUser}" method="post">
+          <form action="#" th:action="@{/ilogin}" th:object="${instructorUser}" method="post">
             <p><input type="text" th:field="*{email}" class="form-control" placeholder="Enter Your Email" /></p>
             <p><input type="password" th:field="*{password}" class="form-control" placeholder="Enter Your Password"/></p>
             <p><input type="submit" value="Log In" class="btn btn-success" /></p>
           </form>
-          Not Registered ?  <a href="/register">Register here</a>
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Student Registration</title>
+  <title>Log In</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
   <!-- CSS -->
@@ -21,15 +21,21 @@
   </div>
 </nav>
 <div class="container">
-  <div class="row">
-    <div class="col-md-offset-4 col-md-4">
-      <h1>Student Registration</h1>
-      <form action="#" th:action="@{/register}" th:object="${registerUser}" method="post">
-        <p>Email: <input type="text" th:field="*{email}"/></p>
-        <p>Name: <input type="text" th:field="*{name}"/></p>
-        <p>Password: <input type="text" th:field="*{password}"/></p>
-        <p><input type="submit" value="Submit"/></p>
-      </form>
+  <div class="row centered-form">
+    <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title text-center">Student Registration</h3>
+        </div>
+        <div class="panel-body">
+          <form action="#" th:action="@{/register}" th:object="${registerUser}" method="post">
+            <p><input type="text" th:field="*{email}" class="form-control" placeholder="Enter Your Email" /></p>
+            <p><input type="text" th:field="*{name}" class="form-control" placeholder="Enter Your Name" /></p>
+            <p><input type="password" th:field="*{password}" class="form-control" placeholder="Enter Your Password"/></p>
+            <p><input type="submit" value="Register" class="btn btn-success" /></p>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
 </div>

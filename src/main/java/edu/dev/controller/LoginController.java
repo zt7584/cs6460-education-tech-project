@@ -42,8 +42,17 @@ public class LoginController {
 			return "redirect:/profile";
 		}
 		model.addAttribute("studentUser", new User());
-		model.addAttribute("instructorUser", new User());
 		return "login";
+	}
+
+	@GetMapping("/admin")
+	public String adminLoginGet(Model model, HttpSession session) {
+		User user = (User) session.getAttribute(Constant.SESSION_USER);
+		if (user != null) {
+			return "redirect:/profile";
+		}
+		model.addAttribute("instructorUser", new User());
+		return "admin";
 	}
 
 	@PostMapping("/slogin")
