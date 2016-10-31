@@ -33,7 +33,7 @@
         <div class="panel-body">
           <form action="#" th:action="@{/proposal}" th:object="${proposal}" method="post">
             <p><input type="text" th:field="*{title}" class="form-control" placeholder="Enter Your Proposal Title" /></p>
-            <p><textarea th:field="*{description}" class="form-control" placeholder="Enter Your Password"></textarea></p>
+            <p><textarea th:field="*{description}" class="form-control" placeholder="Enter Your Proposal Description"></textarea></p>
             <p><input type="submit" value="Submit" class="btn btn-success" /></p>
           </form>
         </div>
