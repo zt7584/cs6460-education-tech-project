@@ -2,7 +2,8 @@
 This application requires the installation of MySQL on your computer. If you don't have it installed already, please refer to this post for instructions:
 http://dev.mysql.com/doc/mysql-getting-started/en/
 
-To install this application:
+To install this application:  
+
 1. Download this repository to import as Gradle in your Java complier.  
 
 2. Connect to MySQL Server in your Java compiler.  
