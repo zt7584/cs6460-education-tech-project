@@ -2,11 +2,15 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8"/>
-  <title>Success</title>
+  <title>Profile</title>
 
   <!-- CSS -->
   <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
   <link rel="stylesheet" type="text/css" href="css/css.css"/>
+
+  <!-- JS -->
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 </head>
 <body>
 <nav class="navbar navbar-default">
@@ -19,85 +23,217 @@
     </p>
   </div>
 </nav>
-<div class="container">
-  <div class="row centered-form">
-    <div class="ol-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
-      <h1>Welcome <span th:text="${sessionUserName}"></span>!</h1>
-      <div th:if="${sessionUser.getRole()}" class="panel panel-info">
-        <div class="panel-heading">
-          <h3 class="panel-title text-center">Actions</h3>
-        </div>
-        <div class="panel-body">
-          <div class="row">
-            <div class="col col-md-4">
-              <a class="form-control btn btn-success" href="/proposal">Create Proposal</a>
-            </div>
+<div class="fluid-container">
+  <div class="col-md-8 col-md-offset-2">
+    <h1>Welcome <span th:text="${sessionUserName}"></span>!</h1>
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <h3 class="panel-title text-center">Actions</h3>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div th:if="${sessionUser.getRole()} == 1" class="col col-md-4">
+            <a class="form-control btn btn-success" href="/proposal">Create Proposal</a>
+          </div>
+          <div th:if="${sessionUser.getRole()} == 1" class="col col-md-4">
+            <a class="form-control btn btn-success" href="/onlinejudge">Online Judge</a>
+          </div>
+          <div th:if="${sessionUser.getRole()} == 0" class="col col-md-4">
+            <a class="form-control btn btn-success" href="/addgradingrubric">Add Grading Rubric</a>
+          </div>
+          <div th:if="${sessionUser.getRole()} == 0" class="col col-md-4">
+            <a class="form-control btn btn-success" href="/grading">Grading</a>
           </div>
         </div>
       </div>
-      <div class="panel panel-info">
-        <div class="panel-heading">
-          <h3 class="panel-title text-center">Proposals</h3>
-        </div>
-        <div class="panel-body">
-          <div th:switch="${sessionUser.getRole()}">
-        <div th:case="1">
-          <table class="table table-bordered">
-            <tr>
-              <th>Proposal Id</th>
-              <th>Proposal Title</th>
-              <th>Proposal Description</th>
-              <th>Proposal Status</th>
-              <th>Created At</th>
-              <th>Last Updated At</th>
-            </tr>
-            <tr th:each="proposal : ${proposals}">
-              <td><span th:text="${proposal.id}"></span></td>
-              <td><span th:text="${proposal.title}"></span></td>
-              <td><span th:text="${proposal.description}"></span></td>
-              <td>
-                <div th:switch="${proposal.status}">
-                  <span th:case="0">Pending</span>
-                  <span th:case="1">Approved</span>
-                </div>
-              </td>
-              <td><span th:text="${proposal.createdAt}"></span></td>
-              <td><span th:text="${proposal.lastUpdatedAt}"></span></td>
-            </tr>
-          </table>
-        </div>
-        <div th:case="0">
-          <table class="table table-bordered">
-            <tr>
-              <th>Proposal Id</th>
-              <th>Proposal Title</th>
-              <th>Proposal Description</th>
-              <th>Proposal Status</th>
-              <th>Created At</th>
-              <th>Last Updated At</th>
-              <th>Action</th>
-            </tr>
-            <tr th:each="proposal : ${proposals}">
-              <td><span th:text="${proposal.id}"></span></td>
-              <td><span th:text="${proposal.title}"></span></td>
-              <td><span th:text="${proposal.description}"></span></td>
-              <td>
-                <div th:switch="${proposal.status}">
-                  <span th:case="0">Pending</span>
-                  <span th:case="1">Approved</span>
-                </div>
-              </td>
-              <td><span th:text="${proposal.createdAt}"></span></td>
-              <td><span th:text="${proposal.lastUpdatedAt}"></span></td>
-              <td>
-                <form th:if="${proposal.status} == 0" action="#" th:action="@{/profile/} + ${proposal.id}" method="post">
-                  <input type="submit" value="Approve" class="btn btn-primary"/>
-                </form>
-              </td>
-            </tr>
-          </table>
-        </div>
+    </div>
+    <div th:if="${sessionUser.getRole()} == 0" class="panel panel-info">
+      <div class="panel-heading">
+        <h3 class="panel-title text-center">Grading Rubrics</h3>
       </div>
+      <div class="panel-body">
+        <div th:if="${gradingRubrics.size()} == 0">
+          <div class="alert alert-warning">No grading rubrics at this time.</div>
+        </div>
+        <table th:if="${gradingRubrics.size()} != 0" class="table table-bordered">
+          <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Threshold</th>
+            <th>Operator</th>
+            <th>Action</th>
+          </tr>
+          <tr th:each="gradingRubric : ${gradingRubrics}">
+            <td><span th:text="${gradingRubric.id}"></span></td>
+            <td><span th:text="${gradingRubric.name}"></span></td>
+            <td><span th:text="${gradingRubric.threshold}"></span></td>
+            <td>
+              <span th:text="${gradingRubric.operator}"></span>
+            </td>
+            <td>
+              <form action="#" th:action="@{/profile/delete_grading_rubric/} + ${gradingRubric.id}"
+                    method="post">
+                <input type="submit" value="Delete" class="btn btn-danger"/>
+              </form>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <h3 class="panel-title text-center">Proposals</h3>
+      </div>
+      <div class="panel-body">
+        <div th:switch="${sessionUser.getRole()}">
+          <div th:case="1">
+            <table class="table table-bordered">
+              <tr>
+                <th>Proposal Id</th>
+                <th>Proposal Title</th>
+                <th>Proposal Description</th>
+                <th>Proposal Status</th>
+                <th>Created At</th>
+                <th>Last Updated At</th>
+                <th>Action</th>
+              </tr>
+              <tr th:each="proposal : ${proposals}">
+                <td><span th:text="${proposal.id}"></span></td>
+                <td><span th:text="${proposal.title}"></span></td>
+                <td><span th:text="${#strings.abbreviate(proposal.description, 10)}"></span></td>
+                <td>
+                  <div th:switch="${proposal.status}">
+                    <span th:case="0">Pending</span>
+                    <span th:case="1">Approved</span>
+                  </div>
+                </td>
+                <td><span th:text="${proposal.createdAt}"></span></td>
+                <td><span th:text="${proposal.lastUpdatedAt}"></span></td>
+                <td>
+                  <button class="btn btn-primary" th:href="'#student_'+${proposal.id}" data-toggle="modal">View Details</button>
+                  <div class="modal fade" th:id="'student_' + ${proposal.id}" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                          <h4 class="modal-title"><span th:text="${proposal.title}"></span></h4>
+                        </div>
+                        <div class="modal-body">
+                          <p><strong>Description: </strong></p>
+                          <p><span th:text="${proposal.description}"></span></p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div th:case="0">
+            <h3>Pending Proposals</h3>
+            <div th:if="${pendingProposals.size()} == 0">
+              <div class="alert alert-warning">No pending proposals at this time.</div>
+            </div>
+            <div th:if="${pendingProposals.size()} > 0">
+              <table class="table table-bordered">
+                <tr>
+                  <th>Proposal Id</th>
+                  <th>User Id</th>
+                  <th>Proposal Title</th>
+                  <th>Proposal Description</th>
+                  <th>Proposal Status</th>
+                  <th>Created At</th>
+                  <th>Last Updated At</th>
+                  <th>Action</th>
+                </tr>
+                <tr th:each="proposal : ${pendingProposals}">
+                  <td><span th:text="${proposal.id}"></span></td>
+                  <td><span th:text="${proposal.uid}"></span></td>
+                  <td><span th:text="${proposal.title}"></span></td>
+                  <td><span th:text="${#strings.abbreviate(proposal.description, 10)}"></span></td>
+                  <td>
+                    <div th:switch="${proposal.status}">
+                      <span th:case="0">Pending</span>
+                      <span th:case="1">Approved</span>
+                    </div>
+                  </td>
+                  <td><span th:text="${proposal.createdAt}"></span></td>
+                  <td><span th:text="${proposal.lastUpdatedAt}"></span></td>
+                  <td>
+                    <p>
+                      <button class="btn btn-primary" th:href="'#pending_'+${proposal.id}" data-toggle="modal">View Details</button>
+                    </p>
+                    <form action="#" th:action="@{/profile/} + ${proposal.id}"
+                          method="post">
+                      <input type="submit" value="Approve" class="btn btn-success"/>
+                    </form>
+                    <div class="modal fade" th:id="'pending_' + ${proposal.id}" tabindex="-1" role="dialog" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title" id="tiketLabel"><span th:text="${proposal.title}"></span></h4>
+                          </div>
+                          <div class="modal-body">
+                            <span th:text="${proposal.description}"></span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <h3>Approved Proposals</h3>
+            <div th:if="${approvedProposals.size()} == 0">
+              <div class="alert alert-warning">No approved proposals at this time.</div>
+            </div>
+            <div th:if="${approvedProposals.size()} > 0">
+              <table class="table table-bordered">
+                <tr>
+                  <th>Proposal Id</th>
+                  <th>User Id</th>
+                  <th>Proposal Title</th>
+                  <th>Proposal Description</th>
+                  <th>Proposal Status</th>
+                  <th>Created At</th>
+                  <th>Last Updated At</th>
+                  <th>Action</th>
+                </tr>
+                <tr th:each="proposal : ${approvedProposals}">
+                  <td><span th:text="${proposal.id}"></span></td>
+                  <td><span th:text="${proposal.uid}"></span></td>
+                  <td><span th:text="${proposal.title}"></span></td>
+                  <td><span th:text="${#strings.abbreviate(proposal.description, 10)}"></span></td>
+                  <td>
+                    <div th:switch="${proposal.status}">
+                      <span th:case="0">Pending</span>
+                      <span th:case="1">Approved</span>
+                    </div>
+                  </td>
+                  <td><span th:text="${proposal.createdAt}"></span></td>
+                  <td><span th:text="${proposal.lastUpdatedAt}"></span></td>
+                  <td>
+                    <button class="btn btn-primary" th:href="'#approved_'+${proposal.id}" data-toggle="modal">View Details</button>
+                    <div class="modal fade" th:id="'approved_' + ${proposal.id}" tabindex="-1" role="dialog" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title"><span th:text="${proposal.title}"></span></h4>
+                          </div>
+                          <div class="modal-body">
+                            <p><strong>Description: </strong></p>
+                            <p><span th:text="${proposal.description}"></span></p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
     </div>

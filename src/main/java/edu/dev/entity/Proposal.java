@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static com.sun.tools.doclets.formats.html.markup.HtmlStyle.title;
+
 /**
  * Created by tengzhao on 10/26/16.
  */
@@ -43,21 +45,21 @@ public class Proposal {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
-    private String title;
-    private String description;
-    private int status;
+    protected int id;
+    protected String title;
+    protected String description;
+    protected int status;
 
 //    @OneToMany(mappedBy = "proposal")
 //    private List<UserProposalRelationship> users = new ArrayList<>();
 
     @Column(name = "created_at", columnDefinition="DATETIME")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
+    protected Date createdAt;
 
     @Column(name = "last_updated_at", columnDefinition="DATETIME")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date lastUpdatedAt;
+    protected Date lastUpdatedAt;
 
     public Proposal() {
     }

@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Add Grading Rubric</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+  <!-- CSS -->
+  <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" type="text/css" href="css/css.css"/>
+
+  <!-- JavaScript -->
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">CS6460 Education Technology Project</a>
+    </div>
+  </div>
+</nav>
+<div class="fluid-container">
+  <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title text-center">Add Grading Rubric</h3>
+      </div>
+      <div class="panel-body">
+        <form action="#" th:action="@{/addgradingrubric}" th:object="${gradingRubric}" method="post">
+          <p><input type="text" th:field="*{name}" class="form-control" placeholder="Enter Grading Rubric Name"/></p>
+          <p><input type="number" th:field="*{threshold}" class="form-control" placeholder="Enter Grading Rubric Threshold"/></p>
+          <p>Statistic Type:
+            <select th:field="*{statisticEntry}">
+              <option th:each="statisticEntryName : ${statisticEntryNames}"
+                      th:value="${statisticEntryName}"
+                      th:text="${statisticEntryName}"></option>
+            </select>
+          </p>
+          <p>Operator:
+            <select th:field="*{operator}">
+              <option th:value="0">Larger than</option>
+              <option th:value="1">Larger than or Equal to</option>
+              <option th:value="2">Equal to</option>
+              <option th:value="3">Less than or Equal to</option>
+              <option th:value="4">Less than</option>
+            </select>
+          </p>
+          <p><input type="submit" value="Add" class="btn btn-success"/></p>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

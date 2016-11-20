@@ -21,6 +21,11 @@ public class UserService {
 		userRepository.save(user);
 	}
 
+	public boolean exist(Integer userId) {
+		List<User> tempUsers = userRepository.findById(userId);
+		return tempUsers != null && tempUsers.size() == 1;
+	}
+
 	public User authenticate(User user, int role) {
 		List<User> result = userRepository.findByEmailAndPasswordAndRole(user.getEmail(), user.getPassword(), role);
 		if (result != null && result.size() == 1) {

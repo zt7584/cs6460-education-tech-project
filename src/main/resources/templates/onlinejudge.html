@@ -1,0 +1,91 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Online Judge</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+  <!-- CSS -->
+  <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" type="text/css" href="css/css.css"/>
+
+  <!-- JavaScript -->
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">CS6460 Education Technology Project</a>
+    </div>
+    <p style="float: right; " class="navbar-btn">
+      <a href="/logout" class="btn btn-primary">Log Out</a>
+    </p>
+  </div>
+</nav>
+<div class="fluid-container">
+  <div class="col-md-8 col-md-offset-2">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title text-center">Online Judge</h3>
+      </div>
+      <div class="panel-body">
+        <form action="#" th:action="@{/onlinejudge}" th:object="${onlinejudge}" method="post">
+          <p>
+            Database:
+            <select th:field="*{database}">
+              <option th:value="0">MySQL</option>
+              <option th:value="1">MongoDB</option>
+            </select>
+          </p>
+          <p><textarea th:field="*{query}" class="form-control"
+                       placeholder="Enter Your Query Here"></textarea></p>
+          <p><input type="submit" value="Execute" class="btn btn-success"/></p>
+        </form>
+        <div style="background: black; width: 100%; padding: 10px;">
+          <h4 style="color: white;">Statistics: </h4>
+          <div th:if="${onlinejudgeResponse} != null" style="color: white;">
+            <ul>
+              <li th:each="statisticEntry : ${onlinejudgeResponse.getStatisticEntries()}">
+                <strong th:text="${statisticEntry.getName()} + ':'"></strong>&nbsp;&nbsp;
+                <span th:text="${statisticEntry.getNumeric()}"></span>&nbsp;
+                <span th:text="${statisticEntry.getUnit()}"></span>
+              </li>
+            </ul>
+          </div>
+          <h4 style="color: white; ">Execution Result: </h4>
+          <p th:if="${onlinejudgeResponse} != null">
+            <pre id="jresponse"></pre>
+            <script th:inline="javascript">
+              /*<![CDATA[*/
+              function syntaxHighlight(json) {
+                json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+                  var cls = 'number';
+                  if (/^"/.test(match)) {
+                    if (/:$/.test(match)) {
+                      cls = 'key';
+                    } else {
+                      cls = 'string';
+                    }
+                  } else if (/true|false/.test(match)) {
+                    cls = 'boolean';
+                  } else if (/null/.test(match)) {
+                    cls = 'null';
+                  }
+                  return '<span class="' + cls + '">' + match + '</span>';
+                });
+              }
+              var response = [[${onlinejudgeResponse.getRawResponse()}]];
+              var str = JSON.stringify(response, undefined, 4);
+              document.getElementById('jresponse').innerHTML = syntaxHighlight(str);
+              /*]]>*/
+            </script>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

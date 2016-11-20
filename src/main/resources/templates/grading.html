@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html ng-app="grading-module">
+<head>
+  <title>Grading</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+  <!-- CSS -->
+  <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" type="text/css" href="css/css.css"/>
+
+  <!-- JavaScript -->
+  <script src="/bower_components/angular/angular.js"></script>
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+  <script src="js/grading.js"></script>
+</head>
+<body ng-controller="GradingController">
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">CS6460 Education Technology Project</a>
+    </div>
+  </div>
+</nav>
+<div class="fluid-container">
+  <div class="col-md-8 col-md-offset-2">
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <h3 class="panel-title text-center">Grading Rubrics</h3>
+      </div>
+      <div class="panel-body">
+        <div ng-show="gradingRubrics.length == 0">
+          <div class="alert alert-warning">No grading rubrics at this time.</div>
+        </div>
+        <table ng-show="gradingRubrics.length > 0" class="table table-bordered">
+          <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Threshold</th>
+            <th>Operator</th>
+          </tr>
+          <tr ng-repeat="gradingRubric in gradingRubrics">
+            <td>{{ gradingRubric.id }}</td>
+            <td>{{ gradingRubric.name }}</td>
+            <td>{{ gradingRubric.threshold }}</td>
+            <td>{{ gradingRubric.operator }}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <h3 class="panel-title text-center">Grading ...</h3>
+      </div>
+      <div class="panel-body">
+        <p>Student Id: </p>
+        <input ng-model="studentId" type="number" class="form-control"/><br />
+        <button class="btn btn-primary btn-block" ng-click="buttonOnClick()">{{ gradingButton }}</button>
+        <div ng-show="gradingLogs.length > 0">
+          <h3>Grading Progress</h3>
+          <div style="border: 1px solid gray; background: black; color: lawngreen; padding: 10px;">
+            <p ng-repeat="gradingLog in gradingLogs">{{ gradingLog }}</p>
+          </div>
+        </div>
+        <div ng-show="gradingResults.length > 0">
+          <h3>Grading Result</h3>
+          <div style="border: 1px solid gray; background: black; color: white; padding: 10px;">
+            <p ng-repeat="gradingResult in gradingResults">
+              {{ gradingResult.gradingRubric }}
+              <span ng-show="gradingResult.result" style="color: lawngreen; font-weight: 600;">Pass</span>
+              <span ng-hide="gradingResult.result" style="color: red; font-weight: 600;">Fail</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

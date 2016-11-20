@@ -1,8 +1,7 @@
 package edu.dev.controller;
 
-import edu.dev.entity.Proposal;
-import edu.dev.entity.User;
-import edu.dev.entity.UserProposalRelationship;
+import edu.dev.entity.*;
+import edu.dev.repository.GradingRubricRepository;
 import edu.dev.repository.ProposalRepository;
 import edu.dev.repository.UserProposalRelationshipRepository;
 import edu.dev.util.Constant;
@@ -31,6 +30,9 @@ public class ProfileController {
     @Autowired
     UserProposalRelationshipRepository userProposalRelationshipRepository;
 
+    @Autowired
+    GradingRubricRepository gradingRubricRepository;
+
     @GetMapping("/profile")
     public String profileGet(HttpSession session, Model model) {
         User user = (User) session.getAttribute(Constant.SESSION_USER);
@@ -57,6 +59,9 @@ public class ProfileController {
         User user = (User) session.getAttribute(Constant.SESSION_USER);
         boolean isStudent = user.getRole() == User.Role.STUDENT;
         List<Proposal> proposals = new ArrayList<>();
+        List<ProposalResponse> pendingProposals = new ArrayList<>();
+        List<ProposalResponse> approvedProposals = new ArrayList<>();
+        List<GradingRubric> gradingRubrics = new ArrayList<>();
         if (isStudent) {
             // Pull all the submitted proposals
             List<UserProposalRelationship> userProposalRelationshipList = userProposalRelationshipRepository.findByUserId(user.getId());
@@ -68,6 +73,7 @@ public class ProfileController {
                     }
                 }
             }
+            model.addAttribute("proposals", proposals);
         }
         else {
             // Pull all the proposals from all students
@@ -75,13 +81,38 @@ public class ProfileController {
             for (UserProposalRelationship userProposalRelationship : all) {
                 List<Proposal> tempProposalList = proposalRepository.findById(userProposalRelationship.getPid());
                 if (tempProposalList != null) {
-                    proposals.addAll(tempProposalList);
+                    for (Proposal proposal : tempProposalList) {
+                        if (proposal.getStatus() == Proposal.Status.PENDING) {
+                            pendingProposals.add(new ProposalResponse(userProposalRelationship.getUid(), proposal));
+                        }
+                        else if (proposal.getStatus() == Proposal.Status.APPROVED) {
+                            approvedProposals.add(new ProposalResponse(userProposalRelationship.getUid(), proposal));
+                        }
+                    }
                 }
             }
+            List<GradingRubric> temp = gradingRubricRepository.findAllGradingRubric();
+            if (temp != null) {
+                gradingRubrics.addAll(temp);
+            }
+            model.addAttribute("pendingProposals", pendingProposals);
+            model.addAttribute("approvedProposals", approvedProposals);
+            model.addAttribute("gradingRubrics", gradingRubrics);
         }
         model.addAttribute("sessionUserName", user.getName());
         model.addAttribute("sessionUser", user);
         model.addAttribute("isStudent", isStudent);
-        model.addAttribute("proposals", proposals);
+    }
+
+    @RequestMapping(value="/profile/delete_grading_rubric/{id}", method= RequestMethod.POST)
+    @Transactional
+    public String deleteGradingRubric(HttpSession session, Model model, @PathVariable("id") Integer id) {
+        User user = (User) session.getAttribute(Constant.SESSION_USER);
+        if (user == null) {
+            return "redirect:/login";
+        }
+        gradingRubricRepository.delete(id);
+        setupPage(session, model);
+        return "redirect:/profile";
     }
 }

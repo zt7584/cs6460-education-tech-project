@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS user (
 /* 0: instructor role, 1: student role*/
 INSERT INTO user (email, name, password, role) VALUES ('instructor@gatech.edu', 'Instructor Inspiration', 'password', 0);
 
+/* 0: pending, 1: approved */
 CREATE TABLE IF NOT EXISTS proposal (
   id INT AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR(256) NOT NULL,
@@ -34,11 +35,56 @@ CREATE TABLE IF NOT EXISTS proposal (
   last_updated_at DATETIME NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS proposal_modification_history (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  pid INT NOT NULL,
+  subject VARCHAR(256) NOT NULL,
+  modification VARCHAR(1024) NOT NULL,
+  last_updated_at DATETIME NOT NULL,
+  FOREIGN KEY (pid) REFERENCES proposal(id)
+);
+
 CREATE TABLE IF NOT EXISTS user_proposal_relationship (
-  uid INT,
-  pid INT,
-  relationship INT,
+  uid INT NOT NULL,
+  pid INT NOT NULL,
+  relationship INT NOT NULL,
   PRIMARY KEY (uid, pid, relationship),
   FOREIGN KEY (uid) REFERENCES user(id),
   FOREIGN KEY (pid) REFERENCES proposal(id)
+);
+
+/* user can only submit progress update, after proposal is approved */
+CREATE TABLE IF NOT EXISTS user_progress_update (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  pid INT NOT NULL,
+  uid INT NOT NULL,
+  progress VARCHAR(1024) NOT NULL,
+  created_at DATETIME NOT NULL,
+  FOREIGN KEY (uid) REFERENCES user(id),
+  FOREIGN KEY (pid) REFERENCES proposal(id)
+);
+
+CREATE TABLE IF NOT EXISTS grading_rubric (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(256) NOT NULL,
+  statistic_entry VARCHAR(256) NOT NULL,
+  threshold INT NOT NULL,
+  operator VARCHAR(2) NOT NULL,
+);
+
+CREATE TABLE IF NOT EXISTS api_usage_entry (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  uid INT NOT NULL,
+  db INT NOT NULL,
+  query VARCHAR(1024) NOT NULL,
+  requested_at DATETIME NOT NULL,
+  FOREIGN KEY (uid) REFERENCES user(id)
+);
+
+CREATE TABLE IF NOT EXISTS api_usage_statistic_result (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  aue_id INT NOT NULL,
+  statistic_entry VARCHAR(256) NOT NULL,
+  result INT NOT NULL,
+  FOREIGN KEY (aue_id) REFERENCES api_usage_entry(id)
 );
