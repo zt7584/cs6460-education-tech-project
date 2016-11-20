@@ -29,7 +29,7 @@
       <div class="panel-body">
         <form action="#" th:action="@{/addgradingrubric}" th:object="${gradingRubric}" method="post">
           <p><input type="text" th:field="*{name}" class="form-control" placeholder="Enter Grading Rubric Name"/></p>
-          <p><input type="number" th:field="*{threshold}" class="form-control" placeholder="Enter Grading Rubric Threshold"/></p>
+
           <p>Statistic Type:
             <select th:field="*{statisticEntry}">
               <option th:each="statisticEntryName : ${statisticEntryNames}"
@@ -46,6 +46,7 @@
               <option th:value="4">Less than</option>
             </select>
           </p>
+          <p><input type="number" th:field="*{threshold}" class="form-control" placeholder="Enter Grading Rubric Threshold"/></p>
           <p><input type="submit" value="Add" class="btn btn-success"/></p>
         </form>
       </div>
