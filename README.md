@@ -8,7 +8,7 @@ To install this application:
 
 2. Connect to MySQL Server in your Java compiler.  
 
-3. (Optional) You may need to change the password for spring datasource in application.yml file under src/main/resources/application.yml
+3. You may need to change the password for spring datasource in application.yml file under src/main/resources/application.yml
 3. Run db_init.sql under src/main/resources/sql.  
 
 4. Run EduTechApplication.java file under src/main/java/edu/dev/.  
