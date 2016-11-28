@@ -32,7 +32,7 @@
       </div>
       <div class="panel-body">
         <div class="row">
-          <div th:if="${sessionUser.getRole()} == 1" class="col col-md-4">
+          <div th:if="${sessionUser.getRole()} == 1 and ${finalProposal} == null" class="col col-md-4">
             <a class="form-control btn btn-success" href="/proposal">Create Proposal</a>
           </div>
           <div th:if="${sessionUser.getRole()} == 1" class="col col-md-4">
@@ -80,6 +80,167 @@
         </table>
       </div>
     </div>
+    <div th:if="${sessionUser.getRole()} == 1" class="panel panel-info">
+      <div class="panel-heading">
+        <h3 class="panel-title text-center">Final Proposal</h3>
+      </div>
+      <div class="panel-body">
+        <div th:if="${finalProposal} == null">
+          <div class="alert alert-warning">No final proposal is determined at this time.</div>
+        </div>
+        <div th:if="${finalProposal} != null">
+          <h1 th:text="${finalProposal.id}"></h1>
+        </div>
+      </div>
+    </div>
+    <div th:if="${sessionUser.getRole()} == 1" class="panel panel-info">
+      <div class="panel-heading">
+        <h3 class="panel-title text-center">Requests to Join Approved Proposal Made by Me</h3>
+      </div>
+      <div class="panel-body">
+        <div th:if="${requestsByMe.size()} == 0">
+          <div class="alert alert-warning">No requests made at this time.</div>
+        </div>
+        <div th:if="${requestsByMe.size()} > 0">
+          <table class="table table-bordered">
+            <tr>
+              <th>User Id</th>
+              <th>Proposal Id</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+            <tr th:each="request : ${requestsByMe}">
+              <td><span th:text="${request.uid}"></span></td>
+              <td><span th:text="${request.pid}"></span></td>
+              <td>
+                <div th:switch="${request.status}">
+                  <span th:case="0">Pending</span>
+                  <span th:case="1">Approved</span>
+                  <span th:case="2">Withdrawn</span>
+                  <span th:case="3">Declined</span>
+                </div>
+              </td>
+              <td>
+                <p th:if="${request.status} != 2 and ${request.status} != 3">
+                  <form action="#" th:action="@{/profile/withdraw_join_request/} + ${request.uid} + @{/} + ${request.pid} + @{/} + ${request.relationship}"
+                        method="post">
+                    <input type="submit" value="Withdraw Request" class="btn btn-danger"/>
+                  </form>
+                </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div th:if="${sessionUser.getRole()} == 1" class="panel panel-info">
+      <div class="panel-heading">
+        <h3 class="panel-title text-center">Requests to Join My Proposal Made by Others</h3>
+      </div>
+      <div class="panel-body">
+        <div th:if="${requestsByOthers.size()} == 0">
+          <div class="alert alert-warning">No requests received at this time.</div>
+        </div>
+        <div th:if="${requestsByOthers.size()} > 0">
+          <table class="table table-bordered">
+            <tr>
+              <th>User Id</th>
+              <th>Proposal Id</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+            <tr th:each="request : ${requestsByOthers}">
+              <td><span th:text="${request.uid}"></span></td>
+              <td><span th:text="${request.pid}"></span></td>
+              <td>
+                <div th:switch="${request.status}">
+                  <span th:case="0">Pending</span>
+                  <span th:case="1">Approved</span>
+                  <span th:case="2">Withdrawn</span>
+                  <span th:case="3">Declined</span>
+                </div>
+              </td>
+              <td>
+                <p th:if="${request.status} == 0">
+                  <form action="#"
+                        th:action="@{/profile/approve_join_request/} + ${request.uid} + @{/} + ${request.pid} + @{/} + ${request.relationship}"
+                        method="post">
+                <p><input type="submit" value="Approve Request" class="btn btn-success"/></p>
+                </form>
+                <form action="#"
+                      th:action="@{/profile/decline_join_request/} + ${request.uid} + @{/} + ${request.pid} + @{/} + ${request.relationship}"
+                      method="post">
+                  <p><input type="submit" value="Decline Request" class="btn btn-danger"/></p>
+                </form>
+                </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div th:if="${sessionUser.getRole()} == 1" class="panel panel-info">
+      <div class="panel-heading">
+        <h3 class="panel-title text-center">Other Students' Proposals</h3>
+      </div>
+      <div class="panel-body">
+        <div th:if="${otherStudentsProposals.size()} == 0">
+          <div class="alert alert-warning">No other students' proposals available at this time.</div>
+        </div>
+        <div th:if="${otherStudentsProposals.size()} > 0">
+          <table class="table table-bordered">
+            <tr>
+              <th>Proposal Id</th>
+              <th>User Id</th>
+              <th>Proposal Title</th>
+              <th>Proposal Description</th>
+              <th>Proposal Status</th>
+              <th>Created At</th>
+              <th>Last Updated At</th>
+              <th>Action</th>
+            </tr>
+            <tr th:each="proposalWithUser : ${otherStudentsProposals}">
+              <td><span th:text="${proposalWithUser.proposal.id}"></span></td>
+              <td><span th:text="${proposalWithUser.user.id}"></span></td>
+              <td><span th:text="${proposalWithUser.proposal.title}"></span></td>
+              <td><span th:text="${#strings.abbreviate(proposalWithUser.proposal.description, 10)}"></span></td>
+              <td>
+                <div th:switch="${proposalWithUser.proposal.status}">
+                  <span th:case="0">Pending</span>
+                  <span th:case="1">Approved</span>
+                  <span th:case="2">Withdrawn</span>
+                  <span th:case="3">Declined</span>
+                </div>
+              </td>
+              <td><span th:text="${proposalWithUser.proposal.createdAt}"></span></td>
+              <td><span th:text="${proposalWithUser.proposal.lastUpdatedAt}"></span></td>
+              <td>
+                <p>
+                  <button class="btn btn-primary" th:href="'#other_'+${proposalWithUser.proposal.id}" data-toggle="modal">View Details</button>
+                </p>
+                <form action="#" th:action="@{/profile/request_to_join/} + ${proposalWithUser.proposal.id}"
+                      method="post">
+                  <p><input type="submit" value="Request to Join" class="btn btn-success"/></p>
+                </form>
+                <div class="modal fade" th:id="'other_' + ${proposalWithUser.proposal.id}" tabindex="-1" role="dialog" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="tiketLabel"><span th:text="${proposalWithUser.proposal.title}"></span></h4>
+                      </div>
+                      <div class="modal-body">
+                        <span th:text="${proposalWithUser.proposal.description}"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
     <div class="panel panel-info">
       <div class="panel-heading">
         <h3 class="panel-title text-center">Proposals</h3>
@@ -105,12 +266,20 @@
                   <div th:switch="${proposal.status}">
                     <span th:case="0">Pending</span>
                     <span th:case="1">Approved</span>
+                    <span th:case="2">Withdrawn</span>
+                    <span th:case="3">Declined</span>
                   </div>
                 </td>
                 <td><span th:text="${proposal.createdAt}"></span></td>
                 <td><span th:text="${proposal.lastUpdatedAt}"></span></td>
                 <td>
                   <button class="btn btn-primary" th:href="'#student_'+${proposal.id}" data-toggle="modal">View Details</button>
+                  <p th:if="${proposal.status} != 2">
+                    <form action="#" th:action="@{/profile/withdraw_proposal/} + ${proposal.id}"
+                          method="post">
+                      <input type="submit" value="Withdraw" class="btn btn-danger"/>
+                    </form>
+                  </p>
                   <div class="modal fade" th:id="'student_' + ${proposal.id}" tabindex="-1" role="dialog" aria-hidden="true">
                     <div class="modal-dialog">
                       <div class="modal-content">
@@ -153,8 +322,10 @@
                   <td><span th:text="${#strings.abbreviate(proposal.description, 10)}"></span></td>
                   <td>
                     <div th:switch="${proposal.status}">
-                      <span th:case="0">Pending</span>
+                      <span th:case="0">Pending</span><span th:case="0">Pending</span>
                       <span th:case="1">Approved</span>
+                      <span th:case="2">Withdrawn</span>
+                      <span th:case="3">Declined</span>
                     </div>
                   </td>
                   <td><span th:text="${proposal.createdAt}"></span></td>
@@ -165,7 +336,11 @@
                     </p>
                     <form action="#" th:action="@{/profile/} + ${proposal.id}"
                           method="post">
-                      <input type="submit" value="Approve" class="btn btn-success"/>
+                      <p><input type="submit" value="Approve" class="btn btn-success"/></p>
+                    </form>
+                    <form action="#" th:action="@{/profile/decline_proposal/} + ${proposal.id}"
+                          method="post">
+                      <p><input type="submit" value="Decline" class="btn btn-danger"/></p>
                     </form>
                     <div class="modal fade" th:id="'pending_' + ${proposal.id}" tabindex="-1" role="dialog" aria-hidden="true">
                       <div class="modal-dialog">
@@ -209,6 +384,8 @@
                     <div th:switch="${proposal.status}">
                       <span th:case="0">Pending</span>
                       <span th:case="1">Approved</span>
+                      <span th:case="2">Withdrawn</span>
+                      <span th:case="3">Declined</span>
                     </div>
                   </td>
                   <td><span th:text="${proposal.createdAt}"></span></td>

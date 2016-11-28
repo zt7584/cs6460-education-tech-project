@@ -18,6 +18,8 @@ public class Proposal {
     public interface Status {
         int PENDING = 0;
         int APPROVED = 1;
+        int WITHDRAWN = 2;
+        int DECLINED = 3;
     }
 
     public Proposal(int id, String title, String description, int status, List<UserProposalRelationship> users, Date createdAt, Date lastUpdatedAt) {
@@ -49,9 +51,6 @@ public class Proposal {
     protected String title;
     protected String description;
     protected int status;
-
-//    @OneToMany(mappedBy = "proposal")
-//    private List<UserProposalRelationship> users = new ArrayList<>();
 
     @Column(name = "created_at", columnDefinition="DATETIME")
     @Temporal(TemporalType.TIMESTAMP)

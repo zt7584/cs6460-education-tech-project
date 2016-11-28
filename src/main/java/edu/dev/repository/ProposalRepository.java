@@ -20,7 +20,6 @@ public interface ProposalRepository extends CrudRepository<Proposal, String> {
     List<Proposal> findById(long proposalId);
 
     @Modifying(clearAutomatically = true)
-//    @Query(value = "UPDATE proposal SET status=?1, last_updated_at=?2 WHERE id=?3", nativeQuery = true)
     @Query(value = "UPDATE proposal SET status=?1 WHERE id=?2", nativeQuery = true)
     void updateProposalStatus(int status, int pid);
 }

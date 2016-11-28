@@ -18,6 +18,13 @@ public class UserProposalRelationship {
         int MEMBER = 1;
     }
 
+    public interface Status {
+        int PENDING = 0;
+        int APPROVED = 1;
+        int WITHDRAWN = 2;
+        int DECLINED = 3;
+    }
+
     @Override
     public String toString() {
         return "UserProposalRelationship{" +
@@ -31,6 +38,12 @@ public class UserProposalRelationship {
     private long uid;
     @Id
     private long pid;
+    @Id
+    private long relationship;
+    private long status;
+
+    public UserProposalRelationship() {
+    }
 
     public long getRelationship() {
         return relationship;
@@ -40,16 +53,16 @@ public class UserProposalRelationship {
         this.relationship = relationship;
     }
 
-    //    @ManyToOne
-//    @PrimaryKeyJoinColumn(name="uid", referencedColumnName="id")
-//    private User user;
-//    @ManyToOne
-//    @PrimaryKeyJoinColumn(name="pid", referencedColumnName="id")
-//    private Proposal proposal;
-    @Id
-    private long relationship;
+    public void setRelationship(long relationship) {
+        this.relationship = relationship;
+    }
 
-    public UserProposalRelationship() {
+    public long getStatus() {
+        return status;
+    }
+
+    public void setStatus(long status) {
+        this.status = status;
     }
 
     public long getUid() {
@@ -67,28 +80,4 @@ public class UserProposalRelationship {
     public void setPid(long pid) {
         this.pid = pid;
     }
-
-//    public User getUser() {
-//        return user;
-//    }
-//
-//    public void setUser(User user) {
-//        this.user = user;
-//    }
-//
-//    public Proposal getProposal() {
-//        return proposal;
-//    }
-//
-//    public void setProposal(Proposal proposal) {
-//        this.proposal = proposal;
-//    }
-//
-//    public int getRelationship() {
-//        return relationship;
-//    }
-//
-//    public void setRelationship(int relationship) {
-//        this.relationship = relationship;
-//    }
 }

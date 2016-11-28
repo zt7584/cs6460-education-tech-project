@@ -49,12 +49,12 @@ public class ProposalController {
             proposal.setStatus(Proposal.Status.PENDING);
             proposal.setCreatedAt(new Date());
             proposal.setLastUpdatedAt(new Date());
-//            proposal.addUser(user, true);
             Proposal saved = proposalRepository.save(proposal);
             UserProposalRelationship userProposalRelationship = new UserProposalRelationship();
             userProposalRelationship.setRelationship(UserProposalRelationship.Relationship.CREATOR);
             userProposalRelationship.setPid(saved.getId());
             userProposalRelationship.setUid(user.getId());
+            userProposalRelationship.setStatus(UserProposalRelationship.Status.APPROVED);
             userProposalRelationshipRepository.save(userProposalRelationship);
             return "redirect:/profile";
         }
