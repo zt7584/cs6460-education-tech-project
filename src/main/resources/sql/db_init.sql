@@ -30,6 +30,8 @@ CREATE TABLE IF NOT EXISTS user (
 /* 0: instructor role, 1: student role*/
 INSERT INTO user (email, name, password, role) VALUES ('instructor@gatech.edu', 'Instructor Inspiration', 'password', 0);
 INSERT INTO user (email, name, password, role) VALUES ('tzhao39@gatech.edu', 'Teng Zhao', '1234', 1);
+INSERT INTO user (email, name, password, role) VALUES ('xyu300@gatech.edu', 'Xinqiong Yu', '1234', 1);
+INSERT INTO user (email, name, password, role) VALUES ('lzhang403@gatech.edu', 'Ling Zhang', '1234', 1);
 
 /* 0: pending, 1: approved */
 CREATE TABLE IF NOT EXISTS proposal (

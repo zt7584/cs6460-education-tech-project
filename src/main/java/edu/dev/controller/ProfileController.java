@@ -1,7 +1,10 @@
 package edu.dev.controller;
 
 import edu.dev.entity.*;
+import edu.dev.object.ApprovedProposal;
 import edu.dev.object.ProposalWithUser;
+import edu.dev.object.RequestWrapper;
+import edu.dev.object.UserWithRole;
 import edu.dev.repository.GradingRubricRepository;
 import edu.dev.repository.ProposalRepository;
 import edu.dev.repository.UserProposalRelationshipRepository;
@@ -16,9 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
@@ -67,8 +68,8 @@ public class ProfileController {
         boolean isStudent = user.getRole() == User.Role.STUDENT;
         List<Proposal> proposals = new ArrayList<>();
         List<ProposalWithUser> otherStudentsProposals = new ArrayList<>();
-        List<ProposalResponse> pendingProposals = new ArrayList<>();
-        List<ProposalResponse> approvedProposals = new ArrayList<>();
+        List<ProposalWithUser> pendingProposals = new ArrayList<>();
+        List<RequestWrapper> approvedProposals = new ArrayList<>();
         List<GradingRubric> gradingRubrics = new ArrayList<>();
         if (isStudent) {
             // Pull all the submitted proposals
@@ -135,8 +136,8 @@ public class ProfileController {
 
             model.addAttribute("proposals", proposals);
             model.addAttribute("otherStudentsProposals", otherStudentsProposals);
-            model.addAttribute("requestsByMe", requestUserProposalRelationshipList);
-            model.addAttribute("requestsByOthers", otherRequestUserProposalRelationshipList);
+            model.addAttribute("requestsByMe", constructRequestWrappers(requestUserProposalRelationshipList));
+            model.addAttribute("requestsByOthers", constructRequestWrappers(otherRequestUserProposalRelationshipList));
             model.addAttribute("ownApprovedProposal", ownApprovedProposal);
             model.addAttribute("finalProposal", finalProposal);
         }
@@ -148,10 +149,10 @@ public class ProfileController {
                 if (tempProposalList != null) {
                     for (Proposal proposal : tempProposalList) {
                         if (proposal.getStatus() == Proposal.Status.PENDING) {
-                            pendingProposals.add(new ProposalResponse(userProposalRelationship.getUid(), proposal));
+                            pendingProposals.add(new ProposalWithUser(proposal, userRepository.findById((int) userProposalRelationship.getUid()).get(0)));
                         }
                         else if (proposal.getStatus() == Proposal.Status.APPROVED) {
-                            approvedProposals.add(new ProposalResponse(userProposalRelationship.getUid(), proposal));
+                            approvedProposals.add(new RequestWrapper(userRepository.findById((int) userProposalRelationship.getUid()).get(0), proposal, userProposalRelationship));
                         }
                     }
                 }
@@ -161,12 +162,44 @@ public class ProfileController {
                 gradingRubrics.addAll(temp);
             }
             model.addAttribute("pendingProposals", pendingProposals);
-            model.addAttribute("approvedProposals", approvedProposals);
+            model.addAttribute("approvedProposals", constructApprovedProposals(approvedProposals));
             model.addAttribute("gradingRubrics", gradingRubrics);
         }
         model.addAttribute("sessionUserName", user.getName());
         model.addAttribute("sessionUser", user);
         model.addAttribute("isStudent", isStudent);
+    }
+
+    private List<RequestWrapper> constructRequestWrappers(List<UserProposalRelationship> relationships) {
+        List<RequestWrapper> requestWrappers = new ArrayList<>();
+        for (UserProposalRelationship relationship : relationships) {
+            requestWrappers.add(new RequestWrapper(
+                    userRepository.findById((int) relationship.getUid()).get(0),
+                    proposalRepository.findById((int) relationship.getPid()).get(0),
+                    relationship));
+        }
+        return requestWrappers;
+    }
+
+    private List<ApprovedProposal> constructApprovedProposals(List<RequestWrapper> approvedRequestWrappers) {
+        Map<Integer, ApprovedProposal> hash = new HashMap<>();
+        for (RequestWrapper requestWrapper : approvedRequestWrappers) {
+            if (hash.containsKey(requestWrapper.getProposal().getId())) {
+                ApprovedProposal approvedProposal = hash.get(requestWrapper.getProposal().getId());
+                approvedProposal.addMember(new UserWithRole(requestWrapper.getUser(), (int) requestWrapper.getRelationship().getRelationship()));
+                hash.put(requestWrapper.getProposal().getId(), approvedProposal);
+            }
+            else {
+                ApprovedProposal approvedProposal = new ApprovedProposal(requestWrapper.getProposal());
+                approvedProposal.addMember(new UserWithRole(requestWrapper.getUser(), (int) requestWrapper.getRelationship().getRelationship()));
+                hash.put(requestWrapper.getProposal().getId(), approvedProposal);
+            }
+        }
+        List<ApprovedProposal> approvedProposals = new ArrayList<>();
+        for (ApprovedProposal approvedProposal : hash.values()) {
+            approvedProposals.add(approvedProposal);
+        }
+        return approvedProposals;
     }
 
     @RequestMapping(value="/profile/delete_grading_rubric/{id}", method= RequestMethod.POST)

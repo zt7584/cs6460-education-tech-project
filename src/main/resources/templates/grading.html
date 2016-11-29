@@ -21,6 +21,9 @@
     <div class="navbar-header">
       <a class="navbar-brand" href="/">CS6460 Education Technology Project</a>
     </div>
+    <p style="float: right; " class="navbar-btn">
+      <a href="/logout" class="btn btn-primary">Log Out</a>
+    </p>
   </div>
 </nav>
 <div class="fluid-container">
@@ -55,8 +58,8 @@
       </div>
       <div class="panel-body">
         <p>Student Id: </p>
-        <input ng-model="studentId" type="number" class="form-control"/><br />
-        <button class="btn btn-primary btn-block" ng-click="buttonOnClick()">{{ gradingButton }}</button>
+        <p><input ng-model="studentId" type="number" class="form-control"/></p>
+        <p><button class="btn btn-primary btn-block" ng-click="buttonOnClick()">{{ gradingButton }}</button></p>
         <div ng-show="gradingLogs.length > 0">
           <h3>Grading Progress</h3>
           <div style="border: 1px solid gray; background: black; color: lawngreen; padding: 10px;">

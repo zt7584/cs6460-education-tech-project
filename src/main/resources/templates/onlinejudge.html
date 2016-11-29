@@ -31,30 +31,32 @@
       </div>
       <div class="panel-body">
         <form action="#" th:action="@{/onlinejudge}" th:object="${onlinejudge}" method="post">
+          <p>Database:</p>
           <p>
-            Database:
-            <select th:field="*{database}">
+            <select class="form-control" th:field="*{database}">
               <option th:value="0">MySQL</option>
               <option th:value="1">MongoDB</option>
             </select>
           </p>
           <p><textarea th:field="*{query}" class="form-control"
                        placeholder="Enter Your Query Here"></textarea></p>
-          <p><input type="submit" value="Execute" class="btn btn-success"/></p>
+          <p><input type="submit" value="Execute" class="btn btn-success form-control"/></p>
         </form>
-        <div style="background: black; width: 100%; padding: 10px;">
-          <h4 style="color: white;">Statistics: </h4>
-          <div th:if="${onlinejudgeResponse} != null" style="color: white;">
-            <ul>
-              <li th:each="statisticEntry : ${onlinejudgeResponse.getStatisticEntries()}">
-                <strong th:text="${statisticEntry.getName()} + ':'"></strong>&nbsp;&nbsp;
-                <span th:text="${statisticEntry.getNumeric()}"></span>&nbsp;
-                <span th:text="${statisticEntry.getUnit()}"></span>
-              </li>
-            </ul>
-          </div>
-          <h4 style="color: white; ">Execution Result: </h4>
-          <p th:if="${onlinejudgeResponse} != null">
+        <div style="background: black; width: 100%; padding: 10px; min-height: 300px;">
+          <h4 style="color: lawngreen; margin: 0px; ">Console</h4>
+          <div th:if="${onlinejudgeResponse} != null">
+            <h5 style="color: white;">Statistics</h5>
+            <div style="color: white;">
+              <ul>
+                <li th:each="statisticEntry : ${onlinejudgeResponse.getStatisticEntries()}">
+                  <strong th:text="${statisticEntry.getName()} + ':'"></strong>&nbsp;&nbsp;
+                  <span th:text="${statisticEntry.getNumeric()}"></span>&nbsp;
+                  <span th:text="${statisticEntry.getUnit()}"></span>
+                </li>
+              </ul>
+            </div>
+            <h5 style="color: white; ">Execution Result</h5>
+            <p>
             <pre id="jresponse"></pre>
             <script th:inline="javascript">
               /*<![CDATA[*/
@@ -81,7 +83,8 @@
               document.getElementById('jresponse').innerHTML = syntaxHighlight(str);
               /*]]>*/
             </script>
-          </p>
+            </p>
+          </div>
         </div>
       </div>
     </div>

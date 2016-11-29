@@ -18,6 +18,9 @@
     <div class="navbar-header">
       <a class="navbar-brand" href="/">CS6460 Education Technology Project</a>
     </div>
+    <p style="float: right; " class="navbar-btn">
+      <a href="/logout" class="btn btn-primary">Log Out</a>
+    </p>
   </div>
 </nav>
 <div class="fluid-container">
@@ -30,15 +33,17 @@
         <form action="#" th:action="@{/addgradingrubric}" th:object="${gradingRubric}" method="post">
           <p><input type="text" th:field="*{name}" class="form-control" placeholder="Enter Grading Rubric Name"/></p>
 
-          <p>Statistic Type:
-            <select th:field="*{statisticEntry}">
+          <p>Statistic Type:</p>
+          <p>
+            <select class="form-control" th:field="*{statisticEntry}">
               <option th:each="statisticEntryName : ${statisticEntryNames}"
                       th:value="${statisticEntryName}"
                       th:text="${statisticEntryName}"></option>
             </select>
           </p>
-          <p>Operator:
-            <select th:field="*{operator}">
+          <p>Operator:</p>
+          <p>
+            <select class="form-control" th:field="*{operator}">
               <option th:value="0">Larger than</option>
               <option th:value="1">Larger than or Equal to</option>
               <option th:value="2">Equal to</option>
