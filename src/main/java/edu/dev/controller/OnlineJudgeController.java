@@ -49,7 +49,7 @@ public class OnlineJudgeController {
             onlineJudgeResponse = mySqlService.executeQueryForOnlineJudge(onlineJudgeRequest.getQuery());
         }
         else if (onlineJudgeRequest.getDatabase() == Constant.DB_TYPE.MONGODB) {
-
+            onlineJudgeResponse = mongoService.executeQueryForOnlineJudge(onlineJudgeRequest.getQuery());
         }
         setupPage(model, onlineJudgeResponse);
         return "onlinejudge";

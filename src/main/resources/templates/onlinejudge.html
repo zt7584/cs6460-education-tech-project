@@ -79,6 +79,9 @@
                 });
               }
               var response = [[${onlinejudgeResponse.getRawResponse()}]];
+              if (typeof response === 'string' || response instanceof String) {
+                response = JSON.parse(response);
+              }
               var str = JSON.stringify(response, undefined, 4);
               document.getElementById('jresponse').innerHTML = syntaxHighlight(str);
               /*]]>*/
