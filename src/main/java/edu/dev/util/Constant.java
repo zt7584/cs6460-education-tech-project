@@ -13,7 +13,7 @@ public class Constant {
      * SQL Keywords
      */
     public static final String JOIN_KEYWORD = "Join";
-    public static final String[] OPERATORS = {">", ">=", "==", "<", "<="};
+    public static final String[] OPERATORS = {">", ">=", "==", "<=", "<"};
     public static final String[] AND_OR_OPERATORS = {"||", "&&"};
 
     public interface DB_TYPE {
