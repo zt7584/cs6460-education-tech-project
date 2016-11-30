@@ -129,9 +129,18 @@ public class ProfileController {
                     }
                 }
             }
-            List<UserProposalRelationship> otherRequestUserProposalRelationshipList = userProposalRelationshipRepository.findRequestsNotMadeByUserId(user.getId());
-            if (otherRequestUserProposalRelationshipList == null) {
-                otherRequestUserProposalRelationshipList = new ArrayList<>();
+            List<UserProposalRelationship> tempOtherRequestUserProposalRelationshipList = userProposalRelationshipRepository.findRequestsNotMadeByUserId(user.getId());
+            if (tempOtherRequestUserProposalRelationshipList == null) {
+                tempOtherRequestUserProposalRelationshipList = new ArrayList<>();
+            }
+            List<UserProposalRelationship> otherRequestUserProposalRelationshipList = new ArrayList<>();
+            for (UserProposalRelationship request : tempOtherRequestUserProposalRelationshipList) {
+                List<UserProposalRelationship> tempList = userProposalRelationshipRepository.findOwnerOfApprovedProposal((int) request.getPid());
+                if (tempList != null & tempList.size() > 0) {
+                    if (tempList.get(0).getUid() == user.getId()) {
+                        otherRequestUserProposalRelationshipList.add(request);
+                    }
+                }
             }
 
             model.addAttribute("proposals", proposals);
