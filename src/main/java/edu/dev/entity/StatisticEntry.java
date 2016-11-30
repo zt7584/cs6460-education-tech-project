@@ -12,8 +12,9 @@ public class StatisticEntry {
     public interface NAME {
         String EXEC_TIME = "Execution Time";
         String NUM_OF_JOIN = "Number of Join";
+        String NUM_OF_FIELDS = "Number of Fields Queried";
     }
-
+;
     public static final String[] STATISTIC_ENTRY_NAMES = {NAME.EXEC_TIME, NAME.NUM_OF_JOIN};
 
     @Override

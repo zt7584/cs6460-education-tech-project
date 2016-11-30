@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import edu.dev.entity.MongoCustomer;
 
-import static com.sun.tools.doclint.Entity.ne;
 
 @Service
 public class MongoService {
@@ -53,6 +52,9 @@ public class MongoService {
 		}
 		onlineJudgeResponse.addStatisticEntry(
 				new StatisticEntry(StatisticEntry.NAME.EXEC_TIME, endTime.getTime() - startTime.getTime(), "ms"));
+
+		onlineJudgeResponse.addStatisticEntry(new StatisticEntry(StatisticEntry.NAME.NUM_OF_FIELDS,
+				CommonUtils.countOfString(query, Constant.FIELD_KEYWORD), ""));
 
 		return onlineJudgeResponse;
 	}
