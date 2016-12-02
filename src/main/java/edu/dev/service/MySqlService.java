@@ -22,7 +22,7 @@ public class MySqlService {
     public Object executeQuery(String sql) {
         Object rawResponse = null;
         try {
-            rawResponse = jdbcTemplate.query(sql, new BeanPropertyRowMapper(User.class));
+            rawResponse = jdbcTemplate.queryForList(sql);
         } catch (Throwable t) {
             rawResponse = t;
         }
@@ -34,7 +34,7 @@ public class MySqlService {
         Date startTime = new Date();
         Object rawResponse = null;
         try {
-            rawResponse = jdbcTemplate.query(sql, new BeanPropertyRowMapper(User.class));
+            rawResponse = jdbcTemplate.queryForList(sql);
         } catch (Throwable t) {
             rawResponse = t;
         }
