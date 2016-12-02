@@ -236,10 +236,12 @@
                 <p>
                   <button class="btn btn-primary form-control" th:href="'#other_'+${proposalWithUser.proposal.id}" data-toggle="modal">View Details</button>
                 </p>
-                <form action="#" th:action="@{/profile/request_to_join/} + ${proposalWithUser.proposal.id}"
-                      method="post">
-                  <p><input type="submit" value="Request to Join" class="btn btn-success form-control"/></p>
-                </form>
+                <p th:if="${finalProposal} == null">
+                  <form action="#" th:action="@{/profile/request_to_join/} + ${proposalWithUser.proposal.id}"
+                        method="post">
+                    <input type="submit" value="Request to Join" class="btn btn-success form-control"/>
+                  </form>
+                </p>
                 <div class="modal fade" th:id="'other_' + ${proposalWithUser.proposal.id}" tabindex="-1" role="dialog" aria-hidden="true">
                   <div class="modal-dialog">
                     <div class="modal-content">
@@ -266,7 +268,11 @@
       <div class="panel-body">
         <div th:switch="${sessionUser.getRole()}">
           <div th:case="1">
-            <table class="table table-bordered">
+            <div th:if="${proposals.size()} == 0">
+              <div class="alert alert-warning">No proposals at this time.</div>
+            </div>
+            <div th:if="${proposals.size()} > 0">
+              <table class="table table-bordered">
               <tr>
                 <th>Proposal Id</th>
                 <th>Proposal Title</th>
@@ -315,6 +321,7 @@
                 </td>
               </tr>
             </table>
+            </div>
           </div>
           <div th:case="0">
             <h3>Pending Proposals</h3>

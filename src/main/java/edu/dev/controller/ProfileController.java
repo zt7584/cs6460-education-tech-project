@@ -195,12 +195,16 @@ public class ProfileController {
         for (RequestWrapper requestWrapper : approvedRequestWrappers) {
             if (hash.containsKey(requestWrapper.getProposal().getId())) {
                 ApprovedProposal approvedProposal = hash.get(requestWrapper.getProposal().getId());
-                approvedProposal.addMember(new UserWithRole(requestWrapper.getUser(), (int) requestWrapper.getRelationship().getRelationship()));
+                if (requestWrapper.getRelationship().getStatus() == UserProposalRelationship.Status.APPROVED) {
+                    approvedProposal.addMember(new UserWithRole(requestWrapper.getUser(), (int) requestWrapper.getRelationship().getRelationship()));
+                }
                 hash.put(requestWrapper.getProposal().getId(), approvedProposal);
             }
             else {
                 ApprovedProposal approvedProposal = new ApprovedProposal(requestWrapper.getProposal());
-                approvedProposal.addMember(new UserWithRole(requestWrapper.getUser(), (int) requestWrapper.getRelationship().getRelationship()));
+                if (requestWrapper.getRelationship().getStatus() == UserProposalRelationship.Status.APPROVED) {
+                    approvedProposal.addMember(new UserWithRole(requestWrapper.getUser(), (int) requestWrapper.getRelationship().getRelationship()));
+                }
                 hash.put(requestWrapper.getProposal().getId(), approvedProposal);
             }
         }
