@@ -74,6 +74,13 @@ public class GradingRestController {
                             gradingResults.put(tempGradingRubric, gradingResults.get(tempGradingRubric) || tempGradingRubric.passOrFail(apiUsageStatisticResult.getResult()));
                         }
                     }
+                    else if (tempGradingRubric.getStatisticEntry().equalsIgnoreCase(StatisticEntry.NAME.NUM_OF_FIELDS)) {
+                        if (gradingResults.get(tempGradingRubric) == null) {
+                            gradingResults.put(tempGradingRubric, tempGradingRubric.passOrFail(apiUsageStatisticResult.getResult()));
+                        } else {
+                            gradingResults.put(tempGradingRubric, gradingResults.get(tempGradingRubric) || tempGradingRubric.passOrFail(apiUsageStatisticResult.getResult()));
+                        }
+                    }
                 }
             }
         }
