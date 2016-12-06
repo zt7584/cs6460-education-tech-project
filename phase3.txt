@@ -1,5 +1,0 @@
-Path for SQL Statements:
-./cs6400-erms/src/main/java/edu/dev/util/SQLStatement.java
-
-Brag Feature Explanations:
-./team062_p3_brag_freature.docx
